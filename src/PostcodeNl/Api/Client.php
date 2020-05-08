@@ -84,11 +84,19 @@ class Client
 	/**
 	 * @see https://api.postcode.nl/documentation/international/v1/Autocomplete/autocomplete
 	 */
-	public function internationalAutocomplete(string $context, string $term, string $session): array
+	public function internationalAutocomplete(string $context, string $term, string $session, string $language = null): array
 	{
 		$this->_validateSessionHeader($session);
 
-		return $this->_performApiCall('international/v1/autocomplete/' . rawurlencode($context) . '/' . rawurlencode($term), $session);
+		$params = [$context, $term];
+		if (isset($language))
+		{
+			$params[] = $language;
+		}
+
+		$params = array_map('rawurlencode', $params);
+
+		return $this->_performApiCall('international/v1/autocomplete/' . implode('/', $params), $session);
 	}
 
 	/**
