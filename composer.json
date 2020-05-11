@@ -26,12 +26,9 @@
     "support": "https://github.com/postcode-nl/PostcodeNl_Api_Client"
   },
   "autoload": {
-    "psr-0": {
-      "PostcodeNl\\Api": "src/"
-    },
-    "classmap": [
-      "src/PostcodeNl/Api/Client.php"
-    ]
+    "psr-4": {
+      "PostcodeNl\\Api\\": "src"
+    }
   },
   "require": {
     "php": ">=7.2",
