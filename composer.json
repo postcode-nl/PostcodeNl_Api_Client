@@ -25,22 +25,14 @@
     "issues": "https://github.com/postcode-nl/PostcodeNl_Api_Client/issues",
     "support": "https://github.com/postcode-nl/PostcodeNl_Api_Client"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/postcode-nl/PostcodeNl_Api_Client"
-    }
-  ],
   "autoload": {
-    "psr-0": {
-      "PostcodeNl\\Api": "src/"
-    },
-    "classmap": [
-      "src/PostcodeNl/Api/Client.php"
-    ]
+    "psr-4": {
+      "PostcodeNl\\Api\\": "src/"
+    }
   },
   "require": {
-    "php": ">=7.2",
-    "ext-curl": "*"
+    "php": "^7.1",
+    "ext-curl": "*",
+    "ext-json": "*"
   }
 }

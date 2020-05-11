@@ -1,0 +1,13 @@
+name: Test
+on: pull_request
+jobs:
+  composer:
+    name: Composer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          php-version: '7.1'
+      - name: Validate composer.json and composer.lock
+        run: composer validate
