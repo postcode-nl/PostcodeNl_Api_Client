@@ -25,12 +25,6 @@
     "issues": "https://github.com/postcode-nl/PostcodeNl_Api_Client/issues",
     "support": "https://github.com/postcode-nl/PostcodeNl_Api_Client"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/postcode-nl/PostcodeNl_Api_Client"
-    }
-  ],
   "autoload": {
     "psr-0": {
       "PostcodeNl\\Api": "src/"
