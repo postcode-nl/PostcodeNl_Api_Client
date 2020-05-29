@@ -1,7 +1,7 @@
 Postcode.nl Api Client
 =============
 
-PHP Api client for the [Postcode.nl Api](https://api.postcode.nl/documentation/). 
+PHP Api client for the [Postcode.nl Api](https://api.postcode.nl/documentation/).
 
 
 How to install
@@ -9,7 +9,7 @@ How to install
 
 ### Composer
 
-Get package `postcode-nl/api-client`. 
+Get package `postcode-nl/api-client`.
 
 ### From this repository
 
