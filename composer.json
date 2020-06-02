@@ -30,9 +30,6 @@
       "PostcodeNl\\Api\\": "src"
     }
   },
-  "replace": {
-    "postcode-nl/api-restclient": "*"
-  },
   "require": {
     "php": "^7.1",
     "ext-curl": "*",
