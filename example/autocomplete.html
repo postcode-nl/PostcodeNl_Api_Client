@@ -24,7 +24,8 @@
 		});
 
 		inputElement.addEventListener('autocomplete-select', function (e) {
-			console.log('Selected item:', e.detail);
+			if ('Address' == e.detail.precision)
+				alert('Selected '+ e.detail.label);
 		});
 	</script>
 </body>
