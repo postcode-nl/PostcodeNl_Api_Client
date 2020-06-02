@@ -27,7 +27,7 @@
   },
   "autoload": {
     "psr-4": {
-      "PostcodeNl\\Api\\": "src"
+      "PostcodeNl\\Api\\": "src/"
     }
   },
   "require": {
