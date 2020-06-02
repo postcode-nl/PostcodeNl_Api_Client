@@ -18,7 +18,10 @@ any supported method, for example:
 `example/index.php?p=dutchAddressByPostcode/2012es/31`
 
 ### Show autocomplete results for a German lookup
-`example/index.php?p=internationalAutocomplete/deu/strasse/CLIENT_SESSION_FROM_COOKIE`
+`example/index.php?p=internationalAutocomplete/deu/strass`
+
+### Show details for a German autocomplete lookup
+`example/index.php?p=internationalGetDetails/deu6SVBbpsiLAfbIGnJSvrXjowbUfFAEQxTRQHTsHM9gj76DzsZ6P3BBv8bOknW7MXrI8OJuDanqDp7iy8WwE7woYhDTqHIpSilNHbOTx00CL8QmigIZ1yxr9PNVyRIL9cPQPhwfDpYYo0NgSeI9E`
 
 Please only use this proxy as an example for your own implementation.
 What you should add:
