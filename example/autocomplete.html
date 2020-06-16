@@ -8,7 +8,6 @@
 	</style>
 	<link rel="stylesheet" href="https://api.postcode.nl/static/3.2.16.0/css/autocomplete-address.css">
 	<script src="https://api.postcode.nl/static/3.2.16.0/js/PostcodeNl/AutocompleteAddress.min.js"></script>
-	<script src="https://api.postcode.nl/static/3.2.16.0/js/PostcodeNl/AutocompleteAddress.js"></script>
 </head>
 <body>
 	<form>
@@ -19,9 +18,10 @@
 	<script>
 		const inputElement = document.querySelector('.input-autocomplete'),
 			autocomplete = new PostcodeNl.AutocompleteAddress(inputElement, {
-			autocompleteUrl: 'index.php?p=internationalAutocomplete', // Required
-			addressDetailsUrl: 'index.php?p=internationalGetDetails', // Required
-		});
+				context: 'nld',
+				autocompleteUrl: 'index.php?p=internationalAutocomplete', // Required
+				addressDetailsUrl: 'index.php?p=internationalGetDetails', // Required
+			});
 
 		inputElement.addEventListener('autocomplete-select', function (e) {
 			if ('Address' == e.detail.precision)
