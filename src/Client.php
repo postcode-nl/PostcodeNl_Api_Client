@@ -437,7 +437,7 @@ class Client
      */
     public function isValidDutchPostcodeFormat(string $postcode): bool
     {
-        return 1 !== preg_match('/^[1-9]\d{3}\s?[a-zA-Z]{2}$/', $postcode);
+        return 1 === preg_match('/^[1-9]\d{3}\s?[a-zA-Z]{2}$/', $postcode);
     }
 
     /**
