@@ -19,6 +19,7 @@
 		const inputElement = document.querySelector('.input-autocomplete'),
 			autocomplete = new PostcodeNl.AutocompleteAddress(inputElement, {
 				context: 'nld',
+				language: 'en-GB',
 				autocompleteUrl: 'index.php?p=internationalAutocomplete', // Required
 				addressDetailsUrl: 'index.php?p=internationalGetDetails', // Required
 			});

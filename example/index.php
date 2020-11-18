@@ -28,11 +28,28 @@ try
 	if (0 !== strpos($action, 'international') && 0 !== strpos($action, 'dutchAddress'))
 		throw new Exception('This example only supports calls to international or dutchAddress methods');
 
-	if ($action == 'internationalAutocomplete' || $action == 'internationalGetDetails')
-		$parts []= 'MY_SESSION_ID';
+	// Use the session header if it was specified already (the Postcode.nl js library will generate one automatically, for example)
+	// Fall back to a place holder identifier. Don't use a fixed identifier for production environments, please read:
+	// https://api.postcode.nl/documentation/international/v1/Autocomplete/autocomplete
+	$sessionHeaderKey = 'HTTP_' . str_replace('-', '_', strtoupper(PostcodeNl\Api\Client::SESSION_HEADER_KEY));
+	$sessionId = $_SERVER[$sessionHeaderKey] ?? 'MY_SESSION_ID';
 
 	$client = new PostcodeNl\Api\Client(API_KEY, API_SECRET, PLATFORM);
-	print json_encode(call_user_func_array([$client, $action], $parts));
+
+	switch ($action)
+	{
+		case 'internationalAutocomplete':
+			$response = $client->internationalAutocomplete($parts[0], $parts[1], $sessionId, $parts[2] ?? null);
+			break;
+		case 'internationalGetDetails':
+			$response = $client->internationalGetDetails($parts[0], $sessionId);
+			break;
+		default:
+			$response = call_user_func_array([$client, $action], $parts);
+			break;
+	}
+
+	print json_encode($response);
 }
 catch (Exception $e)
 {

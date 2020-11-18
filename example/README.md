@@ -18,17 +18,17 @@ any supported method, for example:
 `example/index.php?p=dutchAddressByPostcode/2012es/31`
 
 ### Show autocomplete results for a German lookup
-`example/index.php?p=internationalAutocomplete/deu/strass`
+`example/index.php?p=internationalAutocomplete/deu/berlin`
 
 ### Show details for a German autocomplete lookup
-`example/index.php?p=internationalGetDetails/deu6SVBbpsiLAfbIGnJSvrXjowbUfFAEQxTRQHTsHM9gj76DzsZ6P3BBv8bOknW7MXrI8OJuDanqDp7iy8WwE7woYhDTqHIpSilNHbOTx00CL8QmigIZ1yxr9PNVyRIL9cPQPhwfDpYYo0NgSeI9E`
+`example/index.php?p=internationalGetDetails/deu8jKJe6loItZqtGADAIQGhsPCv9lzLDkd8gfldjgkL4auvVBghq9FoiAuO51y2cL1WohglY2INCswqCGlak7NOm30ELGKca7R8pamRPzapHYQRDVC75lB7eDs26l38FuHTw6Ijp2ISEfN8l2thu1kUa`
 
 Please only use this proxy as an example for your own implementation.
 What you should add:
 
-* Don't allow random calls but implement what you use in a custom wrapper
-* Add caching to prevent fetching the same data over and over
-* Add Session by reading `$_COOKIE`, don't pass it in the URL
+* Don't allow random calls but implement what you use in a custom wrapper.
+* Add caching to prevent fetching the same data over and over.
+* Properly implement session identifiers when using the international autocomplete API. Use a new identifier for each address being validated.
 * Configure your webserver to send all requests under a certain directory to your proxy
  so you don't need to use `?p=`
 
