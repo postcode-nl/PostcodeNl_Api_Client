@@ -32,7 +32,7 @@ class Client
 	/** @var string A platform identifier, a short description of the platform using the API client. */
 	protected $_platform;
 	/** @var resource */
-	protected $_curlHandler;
+	protected $_curlHandle;
 	/** @var array Response headers received in the most recent API call. */
 	protected $_mostRecentResponseHeaders = [];
 
@@ -54,18 +54,18 @@ class Client
 			throw new CurlNotLoadedException('Cannot use Postcode.nl International Autocomplete client, the server needs to have the PHP `cURL` extension installed.');
 		}
 
-		$this->_curlHandler = curl_init();
-		curl_setopt($this->_curlHandler, CURLOPT_CUSTOMREQUEST, 'GET');
-		curl_setopt($this->_curlHandler, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($this->_curlHandler, CURLOPT_CONNECTTIMEOUT, 2);
-		curl_setopt($this->_curlHandler, CURLOPT_TIMEOUT, 5);
-		curl_setopt($this->_curlHandler, CURLOPT_USERAGENT, $this->_getUserAgent());
+		$this->_curlHandle = curl_init();
+		curl_setopt($this->_curlHandle, CURLOPT_CUSTOMREQUEST, 'GET');
+		curl_setopt($this->_curlHandle, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($this->_curlHandle, CURLOPT_CONNECTTIMEOUT, 2);
+		curl_setopt($this->_curlHandle, CURLOPT_TIMEOUT, 5);
+		curl_setopt($this->_curlHandle, CURLOPT_USERAGENT, $this->_getUserAgent());
 
 		if (isset($_SERVER['HTTP_REFERER']))
 		{
-			curl_setopt($this->_curlHandler, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
+			curl_setopt($this->_curlHandle, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
 		}
-		curl_setopt($this->_curlHandler, CURLOPT_HEADERFUNCTION, function($curl, string $header) {
+		curl_setopt($this->_curlHandle, CURLOPT_HEADERFUNCTION, function($curl, string $header) {
 			$length = strlen($header);
 
 			$headerParts = explode(':', $header, 2);
@@ -165,8 +165,8 @@ class Client
 	{
 		$urlParts = [
 			'nl/v1/addresses/rd',
-			rawurlencode($rdX),
-			rawurlencode($rdY),
+			rawurlencode((string) $rdX),
+			rawurlencode((string) $rdY),
 		];
 
 		return $this->_performApiCall(implode('/', $urlParts), null);
@@ -179,8 +179,8 @@ class Client
 	{
 		$urlParts = [
 			'nl/v1/addresses/latlon',
-			rawurlencode($latitude),
-			rawurlencode($longitude),
+			rawurlencode((string) $latitude),
+			rawurlencode((string) $longitude),
 		];
 
 		return $this->_performApiCall(implode('/', $urlParts), null);
@@ -261,7 +261,10 @@ class Client
 
 	public function __destruct()
 	{
-		curl_close($this->_curlHandler);
+		if (isset($this->_curlHandle))
+		{
+			curl_close($this->_curlHandle);
+		}
 	}
 
 	protected function _validateSessionHeader(string $session): void
@@ -279,22 +282,22 @@ class Client
 	protected function _performApiCall(string $path, ?string $session): array
 	{
 		$url = static::SERVER_URL . $path;
-		curl_setopt($this->_curlHandler, CURLOPT_URL, $url);
-		curl_setopt($this->_curlHandler, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($this->_curlHandler, CURLOPT_USERPWD, $this->_key .':'. $this->_secret);
+		curl_setopt($this->_curlHandle, CURLOPT_URL, $url);
+		curl_setopt($this->_curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($this->_curlHandle, CURLOPT_USERPWD, $this->_key .':'. $this->_secret);
 		if ($session !== null)
 		{
-			curl_setopt($this->_curlHandler, CURLOPT_HTTPHEADER, [
+			curl_setopt($this->_curlHandle, CURLOPT_HTTPHEADER, [
 				static::SESSION_HEADER_KEY . ': ' . $session,
 			]);
 		}
 
 		$this->_mostRecentResponseHeaders = [];
-		$response = curl_exec($this->_curlHandler);
+		$response = curl_exec($this->_curlHandle);
 
-		$responseStatusCode = curl_getinfo($this->_curlHandler, CURLINFO_RESPONSE_CODE);
-		$curlError = curl_error($this->_curlHandler);
-		$curlErrorNr = curl_errno($this->_curlHandler);
+		$responseStatusCode = curl_getinfo($this->_curlHandle, CURLINFO_RESPONSE_CODE);
+		$curlError = curl_error($this->_curlHandle);
+		$curlErrorNr = curl_errno($this->_curlHandle);
 		if ($curlError !== '')
 		{
 			throw new CurlException(vsprintf('Connection error number `%s`: `%s`.', [$curlErrorNr, $curlError]));
