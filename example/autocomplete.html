@@ -5,6 +5,10 @@
 		input[type=text]{
 			width: 500px;
 		}
+
+		.autocomplete-result {
+			padding: 1em;
+		}
 	</style>
 	<link rel="stylesheet" href="assets/autocomplete-address.css">
 	<script src="assets/AutocompleteAddress.min.js"></script>
@@ -17,7 +21,9 @@
 	</form>
 
 	<address class="autocomplete-result autocomplete-result-int"></address>
+
 	<script>
+		// See https://developer.postcode.eu/documentation/international/javascript
 		const inputElement = document.querySelector('.input-autocomplete'),
 			autocomplete = new PostcodeNl.AutocompleteAddress(inputElement, {
 				context: 'nld',
@@ -26,9 +32,19 @@
 				addressDetailsUrl: 'index.php?p=internationalGetDetails', // Required
 			});
 
+		// See https://developer.postcode.eu/documentation/international/javascript#event-autocomplete-select
 		inputElement.addEventListener('autocomplete-select', function (e) {
-			if ('Address' == e.detail.precision)
-				alert('Selected '+ e.detail.label);
+			// If the selected element has 'Address' precision we can retrieve details
+			if (e.detail.precision === 'Address')
+			{
+				autocomplete.getDetails(e.detail.context, function (result) {
+					if (typeof result.mailLines !== 'undefined')
+					{
+						// Show the address.
+						document.querySelector('.autocomplete-result').innerHTML = result.mailLines.join('<br>');
+					}
+				});
+			}
 		});
 	</script>
 </body>
