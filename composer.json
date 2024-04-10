@@ -1,6 +1,6 @@
 {
   "name": "postcode-nl/api-client",
-  "description": "A client to the Postcode.nl Address Api for international address validation. You will need to create an account at https://api.postcode.nl.",
+  "description": "A client to the Postcode.nl Address Api for international address validation. You will need to create an account at https://developer.postcode.eu/documentation/.",
   "keywords": [
     "postcode",
     "netherlands",
@@ -22,7 +22,7 @@
       "role": "Developer"
     }
   ],
-  "homepage": "https://api.postcode.nl",
+  "homepage": "https://developer.postcode.eu/documentation/",
   "support": {
     "email": "tech@postcode.nl",
     "issues": "https://github.com/postcode-nl/PostcodeNl_Api_Client/issues",
@@ -44,7 +44,8 @@
   },
   "require": {
     "php": ">=7.2",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-json": "*"
   },
   "scripts": {
     "phpcs": "phpcs --standard=phpcs.xml"

@@ -1,7 +1,7 @@
 Example Postcode.nl Api Proxy
 =============
 
-PHP Api proxy for the [Postcode.nl Api](https://api.postcode.nl/documentation/).
+PHP Api proxy for the [Postcode.nl Api](https://developer.postcode.eu/documentation).
 
 
 Usage

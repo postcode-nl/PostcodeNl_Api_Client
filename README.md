@@ -1,7 +1,7 @@
 Postcode.nl Api Client
 =============
 
-PHP Api client for the [Postcode.nl Api](https://api.postcode.nl/documentation/).
+PHP Api client for the [Postcode.nl Api](https://developer.postcode.eu/documentation/).
 
 
 How to install

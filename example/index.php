@@ -30,7 +30,7 @@ try
 
 	// Use the session header if it was specified already (the Postcode.nl js library will generate one automatically, for example)
 	// Fall back to a place holder identifier. Don't use a fixed identifier for production environments, please read:
-	// https://api.postcode.nl/documentation/international/v1/Autocomplete/autocomplete
+	// https://developer.postcode.eu/documentation/international/v1/Autocomplete/autocomplete
 	$sessionHeaderKey = 'HTTP_' . str_replace('-', '_', strtoupper(PostcodeNl\Api\Client::SESSION_HEADER_KEY));
 	$sessionId = $_SERVER[$sessionHeaderKey] ?? 'MY_SESSION_ID';
 
