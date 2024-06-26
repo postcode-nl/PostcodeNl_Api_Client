@@ -82,7 +82,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//international/v1/Autocomplete/autocomplete
+	 * @see https://developer.postcode.eu/documentation/international/v1/Autocomplete/autocomplete
 	 */
 	public function internationalAutocomplete(string $context, string $term, string $session, string $language = null): array
 	{
@@ -100,7 +100,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//international/v1/Autocomplete/getDetails
+	 * @see https://developer.postcode.eu/documentation/international/v1/Autocomplete/getDetails
 	 */
 	public function internationalGetDetails(string $context, string $session): array
 	{
@@ -110,7 +110,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//international/v1/Autocomplete/getSupportedCountries
+	 * @see https://developer.postcode.eu/documentation/international/v1/Autocomplete/getSupportedCountries
 	 */
 	public function internationalGetSupportedCountries(): array
 	{
@@ -118,7 +118,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/Address/viewByPostcode
+	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/viewByPostcode
 	 */
 	public function dutchAddressByPostcode(string $postcode, int $houseNumber, ?string $houseNumberAddition = null): array
 	{
@@ -143,7 +143,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/Address/matchExact
+	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/matchExact
 	 */
 	public function dutchAddressExactMatch(string $city, string $street, int $houseNumber, string $houseNumberAddition = ''): array
 	{
@@ -159,7 +159,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/Address/viewByRd
+	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/viewByRd
 	 */
 	public function dutchAddressRD(float $rdX, float $rdY): array
 	{
@@ -173,7 +173,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/Address/viewByLatLon
+	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/viewByLatLon
 	 */
 	public function dutchAddressLatLon(float $latitude, float $longitude): array
 	{
@@ -187,7 +187,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/Address/viewByBagNumberDesignationId
+	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/viewByBagNumberDesignationId
 	 */
 	public function dutchAddressBagNumberDesignation(string $bagNumberDesignationId): array
 	{
@@ -200,7 +200,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/Address/viewByBagAddressableObjectId
+	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/viewByBagAddressableObjectId
 	 */
 	public function dutchAddressBagAddressableObject(string $bagAddressableObjectId): array
 	{
@@ -213,7 +213,7 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//nl/v1/PostcodeRange/viewByPostcode
+	 * @see https://developer.postcode.eu/documentation/nl/v1/PostcodeRange/viewByPostcode
 	 */
 	public function dutchAddressPostcodeRanges(string $postcode): array
 	{
@@ -233,7 +233,50 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation//account/v1/Account/getInfo
+	 * @see https://developer.postcode.eu/documentation/international/v1/Validate/validate
+	 */
+	public function validate(string $country, ?string $postcode = null, ?string $locality = null, ?string $street = null, ?string $building = null, ?string $region = null, ?string $streetAndBuilding = null): array
+	{
+		$urlParts = [
+			'international/v1/validate',
+			rawurlencode($country)
+		];
+		$variables = [
+			'postcode' => $postcode,
+			'locality' => $locality,
+			'street' => $street,
+			'building' => $building,
+			'region' => $region,
+			'streetAndBuilding' => $streetAndBuilding,
+		];
+		$parameters = [];
+		foreach ($variables as $key => $value)
+		{
+			if ($value === null)
+			{
+				continue;
+			}
+			$parameters[] = $key . '=' . rawurlencode($value);
+		}
+
+		return $this->_performApiCall(implode('/', $urlParts) . '?' . implode('&', $parameters), null);
+	}
+
+	/**
+	 * @see https://developer.postcode.eu/documentation/international/v1/Validate/getCountry
+	 */
+	public function getCountry(string $country): array
+	{
+		$urlParts = [
+			'international/v1/country',
+			rawurlencode($country),
+		];
+
+		return $this->_performApiCall(implode('/', $urlParts), null);
+	}
+
+	/**
+	 * @see https://developer.postcode.eu/documentation/account/v1/Account/getInfo
 	 */
 	public function accountInfo(): array
 	{
