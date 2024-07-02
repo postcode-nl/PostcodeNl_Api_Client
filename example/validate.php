@@ -13,21 +13,38 @@ $result = null;
 if (isset($_GET['validate']))
 {
 	$client = new PostcodeNl\Api\Client(API_KEY, API_SECRET, PLATFORM);
-	$result = $client->validate(
-		$_GET['country'],
-		 $_GET['postcode'],
-		 $_GET['locality'],
-		 $_GET['street'],
-		 $_GET['building'],
-		 $_GET['region'],
-		 $_GET['streetAndBuilding']
-	);
+	$country = $_GET['country'];
+	// If it is 3 characters it is probably already an iso3 code
+	if (strlen($country) === 3)
+	{
+		$countryIso = strtolower($country);
+	}
+	else
+	{
+		// Request an iso3 code for the country
+		$result = $client->getCountry($country);
+		$countryIso = strtolower($result['iso3']);
+	}
+
+	if (isset($countryIso))
+	{
+		 $result = $client->validate(
+			 $countryIso,
+			 $_GET['postcode'],
+			 $_GET['locality'],
+			 $_GET['street'],
+			 $_GET['building'],
+			 $_GET['region'],
+			 $_GET['streetAndBuilding']
+		 );
+	}
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="nl-NL">
 <head>
+	<title>Validate example</title>
 	<style>
 		input[type=text]{
 			width: 500px;

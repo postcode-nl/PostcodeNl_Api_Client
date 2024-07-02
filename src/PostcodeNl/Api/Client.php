@@ -55,7 +55,6 @@ class Client
 		}
 
 		$this->_curlHandle = curl_init();
-		curl_setopt($this->_curlHandle, CURLOPT_CUSTOMREQUEST, 'GET');
 		curl_setopt($this->_curlHandle, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($this->_curlHandle, CURLOPT_CONNECTTIMEOUT, 2);
 		curl_setopt($this->_curlHandle, CURLOPT_TIMEOUT, 5);
@@ -276,6 +275,57 @@ class Client
 	}
 
 	/**
+	 * @see https://developer.postcode.eu/documentation/reseller/v1/Reseller/createClientAccount
+	 */
+	public function createClientAccount(
+		string $companyName,
+		string $countryIso,
+		string $vatNumber,
+		string $contactEmail,
+		int $subscriptionAmount,
+		array $siteUrls,
+		string $invoiceEmail,
+		string $invoiceReference,
+		string $invoiceAddressLine1,
+		string $invoiceAddressLine2,
+		string $invoiceAddressPostalCode,
+		string $invoiceAddressLocality,
+		string $invoiceAddressRegion,
+		string $invoiceAddressCountryIso,
+		?string $invoiceContactName = null,
+		bool $isTest = false
+	): array
+	{
+		$postData = [
+			'companyName' => $companyName,
+			'countryIso' => $countryIso,
+			'vatNumber' => $vatNumber,
+			'contactEmail' => $contactEmail,
+			'subscriptionAmount' => $subscriptionAmount,
+			'siteUrls' => $siteUrls,
+			'invoiceEmail' => $invoiceEmail,
+			'invoiceReference' => $invoiceReference,
+			'invoiceAddressLine1' => $invoiceAddressLine1,
+			'invoiceAddressLine2' => $invoiceAddressLine2,
+			'invoiceAddressPostalCode' => $invoiceAddressPostalCode,
+			'invoiceAddressLocality' => $invoiceAddressLocality,
+			'invoiceAddressRegion' => $invoiceAddressRegion,
+			'invoiceAddressCountryIso' => $invoiceAddressCountryIso,
+		];
+
+		if ($invoiceContactName !== null)
+		{
+			$postData['invoiceContactName'] = $invoiceContactName;
+		}
+		if ($isTest)
+		{
+			$postData['isTest'] = true;
+		}
+
+		return $this->_performPostApiCall('reseller/v1/client', $postData);
+	}
+
+	/**
 	 * @see https://developer.postcode.eu/documentation/account/v1/Account/getInfo
 	 */
 	public function accountInfo(): array
@@ -325,15 +375,31 @@ class Client
 	protected function _performApiCall(string $path, ?string $session): array
 	{
 		$url = static::SERVER_URL . $path;
-		curl_setopt($this->_curlHandle, CURLOPT_URL, $url);
-		curl_setopt($this->_curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($this->_curlHandle, CURLOPT_USERPWD, $this->_key .':'. $this->_secret);
 		if ($session !== null)
 		{
 			curl_setopt($this->_curlHandle, CURLOPT_HTTPHEADER, [
 				static::SESSION_HEADER_KEY . ': ' . $session,
 			]);
 		}
+		curl_setopt($this->_curlHandle, CURLOPT_HTTPGET, true);
+
+		return $this->_performCurlCall($url);
+	}
+
+	protected function _performPostApiCall(string $path, array $postData = []): array
+	{
+		$url = static::SERVER_URL . $path;
+		curl_setopt($this->_curlHandle, CURLOPT_POST, true);
+		curl_setopt($this->_curlHandle, CURLOPT_POSTFIELDS, http_build_query($postData));
+
+		return $this->_performCurlCall($url);
+	}
+
+	protected function _performCurlCall(string $url): array
+	{
+		curl_setopt($this->_curlHandle, CURLOPT_URL, $url);
+		curl_setopt($this->_curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($this->_curlHandle, CURLOPT_USERPWD, $this->_key .':'. $this->_secret);
 
 		$this->_mostRecentResponseHeaders = [];
 		$response = curl_exec($this->_curlHandle);
@@ -362,9 +428,9 @@ class Client
 			case 401:
 				throw new AuthenticationException('Could not authenticate your request, please make sure your API credentials are correct.');
 			case 403:
-				throw new ForbiddenException('Your account currently has no access to the international API, make sure you have an active subscription.');
+				throw new ForbiddenException(sprintf('API access not allowed: `%s`', $jsonResponse['exception']));
 			case 404:
-				throw new NotFoundException('The requested address could not be found.');
+				throw new NotFoundException('The request was valid, but nothing could be found.');
 			case 429:
 				throw new TooManyRequestsException('Too many requests made, please slow down: ' . $response);
 			case 503:

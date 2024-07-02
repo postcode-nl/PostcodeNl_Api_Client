@@ -7,9 +7,12 @@ PHP Api proxy for the [Postcode.nl Api](https://developer.postcode.eu/documentat
 Usage
 =============
 
-This directory serves as an extremely simple proxy example for the supplied client.
+This directory contains extremely simple examples for the supplied client.
 Set the correct `API_KEY` and `API_SECRET` and optional `PLATFORM` and you can call
 any supported method, for example:
+
+## Autocomplete API example
+To run the autocomplete example `autocomplete.html` set the correct credentials in `example/index.php`.
 
 ### Show all valid data from a valid postal code
 `example/index.php?p=dutchAddressByPostcode/2012es/30`
@@ -31,6 +34,12 @@ What you should add:
 * Properly implement session identifiers when using the international autocomplete API. Use a new identifier for each address being validated.
 * Configure your webserver to send all requests under a certain directory to your proxy
  so you don't need to use `?p=`
+
+## Validate API example
+Set the correct credentials in `example/validate.php` and open the file in your browser.
+
+## Reseller createClientAccount API example
+Set the correct credentials in `example/createClientAccount.php` and open the file in your browser.
 
 License
 =============
