@@ -142,22 +142,6 @@ class Client
 	}
 
 	/**
-	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/matchExact
-	 */
-	public function dutchAddressExactMatch(string $city, string $street, int $houseNumber, string $houseNumberAddition = ''): array
-	{
-		$urlParts = [
-			'nl/v1/addresses/exact',
-			rawurlencode($city),
-			rawurlencode($street),
-			$houseNumber,
-			rawurlencode($houseNumberAddition),
-		];
-
-		return $this->_performApiCall(implode('/', $urlParts), null);
-	}
-
-	/**
 	 * @see https://developer.postcode.eu/documentation/nl/v1/Address/viewByRd
 	 */
 	public function dutchAddressRD(float $rdX, float $rdY): array
