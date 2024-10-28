@@ -39,7 +39,7 @@ try
 	switch ($action)
 	{
 		case 'internationalAutocomplete':
-			$response = $client->internationalAutocomplete($parts[0], $parts[1], $sessionId, $parts[2] ?? null);
+			$response = $client->internationalAutocomplete($parts[0], $parts[1], $sessionId, $parts[2] ?? null, $parts[3] ?? null);
 			break;
 		case 'internationalGetDetails':
 			$response = $client->internationalGetDetails($parts[0], $sessionId);

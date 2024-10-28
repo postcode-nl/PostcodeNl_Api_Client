@@ -83,12 +83,17 @@ class Client
 	/**
 	 * @see https://developer.postcode.eu/documentation/international/v1/Autocomplete/autocomplete
 	 */
-	public function internationalAutocomplete(string $context, string $term, string $session, string $language = null): array
+	public function internationalAutocomplete(string $context, string $term, string $session, string $language = null, string $buildingListMode = null): array
 	{
 		$this->_validateSessionHeader($session);
-
 		$params = [$context, $term];
-		if (isset($language))
+
+		if ($buildingListMode !== null)
+		{
+			$params[] = $language ?? '';
+			$params[] = $buildingListMode;
+		}
+		else if ($language !== null)
 		{
 			$params[] = $language;
 		}

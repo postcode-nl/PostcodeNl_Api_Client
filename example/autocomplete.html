@@ -28,6 +28,7 @@
 			autocomplete = new PostcodeNl.AutocompleteAddress(inputElement, {
 				context: 'nld',
 				language: 'en-GB',
+				buildingListMode: 'paged',
 				autocompleteUrl: 'index.php?p=internationalAutocomplete', // Required
 				addressDetailsUrl: 'index.php?p=internationalGetDetails', // Required
 			});
