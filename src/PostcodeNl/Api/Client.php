@@ -62,8 +62,10 @@ class Client
 
 		if (isset($_SERVER['HTTP_REFERER']))
 		{
-			curl_setopt($this->_curlHandle, CURLOPT_REFERER, $_SERVER['HTTP_REFERER']);
+			// Prevent exceeding max allowed header length
+			curl_setopt($this->_curlHandle, CURLOPT_REFERER, substr($_SERVER['HTTP_REFERER'], 0, 256));
 		}
+
 		curl_setopt($this->_curlHandle, CURLOPT_HEADERFUNCTION, function($curl, string $header) {
 			$length = strlen($header);
 
@@ -431,12 +433,15 @@ class Client
 
 	protected function _getUserAgent(): string
 	{
-		return sprintf(
+		$agent = sprintf(
 			'%s %s/%s PHP/%s',
 			$this->_platform,
 			str_replace('\\', '_', static::class),
 			static::VERSION,
 			PHP_VERSION
 		);
+
+		// Prevent exceeding max allowed header length
+		return substr($agent, 0, 1024);
 	}
 }
