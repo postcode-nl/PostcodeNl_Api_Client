@@ -345,7 +345,7 @@ class Client
 
 	public function __destruct()
 	{
-		if (isset($this->_curlHandle))
+		if (PHP_VERSION_ID < 80000 && isset($this->_curlHandle))
 		{
 			curl_close($this->_curlHandle);
 		}
